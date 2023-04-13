@@ -7,12 +7,12 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
-const MongoDBURI = process.env.MONGO_URI || 'mongodb://localhost/ManualAuth';
+const MongoDBURI = process.env.MONGO_URI || 'mongodb://localhost:27017/ManualAuth';
 
 mongoose.connect(MongoDBURI, {
   useUnifiedTopology: true,
   useNewUrlParser: true
-});
+}).then(()=>console.log("connected"))
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -57,3 +57,4 @@ app.use((err, req, res, next) => {
 app.listen(process.env.PORT || 3000, () => {
   console.log('Express app listening on port 3000');
 });
+

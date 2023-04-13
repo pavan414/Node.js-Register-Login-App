@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const Details = require('../models/details');
 
 router.get('/', (req, res, next) => {
 	return res.render('index.ejs');
@@ -79,9 +80,24 @@ router.get('/profile', (req, res, next) => {
 		if (!data) {
 			res.redirect('/');
 		} else {
-			return res.render('data.ejs', { "name": data.username, "email": data.email });
+			return res.render('profile.ejs');
 		}
 	});
+});
+
+router.post('/profile', (req, res, next) => {
+	let patient = req.body;
+
+	let newPerson = new User(patient);
+
+	newPerson.save((err, Person) => {
+		if (err)
+			console.log(err);
+		else
+			console.log('Success');
+	});
+
+	res.send("Done")
 });
 
 router.get('/logout', (req, res, next) => {
